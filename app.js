@@ -24,16 +24,19 @@ app.post('/doLogin',async (req,res)=>{
 
     const client = await MongoClient.connect(url);
     const dbo = client.db(dbName);
-    const user = await dbo.collection("users").find({$and:[{username:nameInput},{password:passInput}]});
+    var results = await dbo.collection("users").
+            findOne({$and:[{name:nameInput},{password:passInput}]});
     var messageStatus;
-    console.log(user);
-    if(user !=null){
+    console.log(results);
+    if(results !=null){
         messageStatus = 'Login in Ok!';
     }else{
         messageStatus = 'Login in Failed!';
     }
     res.render('index',{msg:messageStatus})
 });
+
+
 
 const dbName = "DoQuocBinhDB";
 app.post('/register',async (req,res)=>{
